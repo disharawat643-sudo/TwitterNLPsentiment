@@ -76,10 +76,12 @@ data/processed/
 *.zip
 *.tar.gz
 
-# Model files
+# Model files (exclude specific ones needed for web app)
 models/*.pkl
 models/*.joblib
 models/*.sav
+!models/twitter_sentiment_model.pkl
+!models/twitter_sentiment_vectorizer.pkl
 *.h5
 *.model
 
