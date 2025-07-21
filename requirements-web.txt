@@ -1,0 +1,21 @@
+# Web Application Additional Requirements
+# Install with: pip install -r requirements-web.txt
+
+# Web Framework
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+
+# Template Engine
+jinja2>=3.1.0
+
+# File Upload Support
+python-multipart>=0.0.6
+
+# CORS Support
+fastapi-cors>=0.0.6
+
+# Static Files
+aiofiles>=23.0.0
+
+# Production Server (Optional)
+gunicorn>=21.0.0
