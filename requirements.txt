@@ -13,12 +13,6 @@ nltk>=3.6.0
 matplotlib>=3.4.0
 seaborn>=0.11.0
 
-# Data Handling
-zipfile36>=0.1.3
-
-# Model Persistence
-pickle-mixin>=1.0.0
-
 # API Development (Optional)
 flask>=2.0.0
 fastapi>=0.68.0
