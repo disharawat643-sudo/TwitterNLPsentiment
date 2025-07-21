@@ -67,18 +67,37 @@ def initialize_analyzer():
     """Initialize the sentiment analyzer with the trained model."""
     global analyzer
     try:
-        analyzer = SentimentAnalyzer()
-        model_path = os.path.join('..', 'models', 'demo_model.pkl')
-        if not os.path.exists(model_path):
-            model_path = os.path.join('..', 'models', 'test_model.pkl')
+        # Try to load the enhanced model first (our properly trained model)
+        enhanced_model_path = os.path.join('..', 'models', 'twitter_sentiment_model.pkl')
+        enhanced_vectorizer_path = os.path.join('..', 'models', 'twitter_sentiment_vectorizer.pkl')
         
-        if os.path.exists(model_path):
-            analyzer.load_model(model_path)
-            print(f"✅ Model loaded successfully from {model_path}")
+        if os.path.exists(enhanced_model_path) and os.path.exists(enhanced_vectorizer_path):
+            # Import the enhanced analyzer
+            sys.path.append('..')
+            from enhanced_twitter_sentiment_analysis import EnhancedTwitterSentimentAnalyzer
+            
+            analyzer = EnhancedTwitterSentimentAnalyzer()
+            analyzer.load_complete_model(enhanced_model_path, enhanced_vectorizer_path)
+            print(f"✅ Enhanced model loaded successfully!")
+            print(f"   - Model: {enhanced_model_path}")
+            print(f"   - Vectorizer: {enhanced_vectorizer_path}")
             return True
         else:
-            print("❌ No trained model found. Please train a model first.")
-            return False
+            # Fallback to old model (with bias issues)
+            print("⚠️  Enhanced model not found. Using fallback model...")
+            analyzer = SentimentAnalyzer()
+            model_path = os.path.join('..', 'models', 'demo_model.pkl')
+            if not os.path.exists(model_path):
+                model_path = os.path.join('..', 'models', 'test_model.pkl')
+            
+            if os.path.exists(model_path):
+                analyzer.load_model(model_path)
+                print(f"⚠️  Fallback model loaded from {model_path} (may have bias issues)")
+                return True
+            else:
+                print("❌ No trained model found. Please train a model first.")
+                return False
+                
     except Exception as e:
         print(f"❌ Error initializing analyzer: {str(e)}")
         return False
@@ -97,7 +116,20 @@ async def startup_event():
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Serve the main web interface."""
+    return templates.TemplateResponse("index_standalone.html", {"request": request})
+
+@app.get("/original", response_class=HTMLResponse)
+async def original_page(request: Request):
+    """Serve the original web interface with external files."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/test", response_class=HTMLResponse)
+async def test_page(request: Request):
+    """Serve test page for debugging static files."""
+    with open("test.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse(content=html_content)
 
 @app.get("/health")
 async def health_check():

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Sentiment Analysis | Team 3 Dude's</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Modern CSS for Twitter Sentiment Analysis Web App */
+
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary-color: #1DA1F2;
+            --secondary-color: #14171A;
+            --success-color: #1D9BF0;
+            --danger-color: #F91880;
+            --warning-color: #FFAD1F;
+            --light-gray: #F7F9FA;
+            --medium-gray: #AAB8C2;
+            --dark-gray: #657786;
+            --white: #FFFFFF;
+            --shadow: 0 2px 25px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background-color: var(--light-gray);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .team-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            color: var(--white);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            padding: 4rem 0;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+
+        .analysis-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Input Styles */
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-top: 0.5rem;
+        }
+
+        .batch-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-top: 0.5rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1991db;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--success-color);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #1a8cd8;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Result Styles */
+        .result-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            border: 1px solid #e1e8ed;
+        }
+
+        .result-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .sentiment-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .emoji {
+            font-size: 3rem;
+        }
+
+        .sentiment-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .confidence-text {
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-overlay .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .loading-overlay p {
+            color: var(--white);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+
+        .toast {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+            max-width: 350px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .hero-text h2 {
+                font-size: 2.5rem;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-twitter"></i>
+                    <h1>Sentiment Analyzer</h1>
+                </div>
+                <div class="team-badge">
+                    <span>By Team 3 Dude's</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>Analyze Twitter Sentiment with AI</h2>
+                    <p>Powered by advanced Machine Learning and Natural Language Processing</p>
+                    <div class="features">
+                        <span class="feature"><i class="fas fa-brain"></i> ML-Powered</span>
+                        <span class="feature"><i class="fas fa-bolt"></i> Real-time</span>
+                        <span class="feature"><i class="fas fa-chart-bar"></i> Accurate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Analysis Section -->
+    <section class="analysis-section">
+        <div class="container">
+            <div class="analysis-grid">
+                <!-- Single Analysis -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-comment"></i> Single Text Analysis</h3>
+                        <p>Analyze sentiment of individual tweets or text</p>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-group">
+                            <textarea 
+                                id="singleTextInput" 
+                                placeholder="Enter your text here... (e.g., 'I love this new product!')"
+                                maxlength="280"
+                                rows="4"
+                            ></textarea>
+                            <div class="char-counter">
+                                <span id="charCount">0</span>/280
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="analyzeSingleBtn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                                <span>Analyze Sentiment</span>
+                            </button>
+                            <button id="resetSingleBtn" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i>
+                                <span>Reset</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="singleResult" class="result-section" style="display: none;">
+                        <div class="result-card">
+                            <div class="sentiment-indicator">
+                                <span id="sentimentEmoji" class="emoji"></span>
+                                <div class="sentiment-details">
+                                    <h4 id="sentimentLabel" class="sentiment-label"></h4>
+                                    <div class="confidence-bar">
+                                        <div id="confidenceBar" class="confidence-fill"></div>
+                                    </div>
+                                    <span id="confidenceText" class="confidence-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Analyzing sentiment...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script>
+        /**
+         * Twitter Sentiment Analysis - JavaScript Application
+         * ===================================================
+         */
+        
+        class SentimentAnalyzer {
+            constructor() {
+                this.initializeElements();
+                this.attachEventListeners();
+                this.stats = {
+                    totalAnalyzed: 0,
+                    totalConfidence: 0
+                };
+            }
+
+            initializeElements() {
+                // Single analysis elements
+                this.singleTextInput = document.getElementById('singleTextInput');
+                this.analyzeSingleBtn = document.getElementById('analyzeSingleBtn');
+                this.singleResult = document.getElementById('singleResult');
+                this.charCount = document.getElementById('charCount');
+
+                // UI elements
+                this.loadingOverlay = document.getElementById('loadingOverlay');
+                this.toastContainer = document.getElementById('toastContainer');
+            }
+
+            attachEventListeners() {
+                // Reset button
+                this.resetSingleBtn = document.getElementById('resetSingleBtn');
+                this.resetSingleBtn.addEventListener('click', () => this.resetSingle());
+
+                // Single text analysis
+                this.analyzeSingleBtn.addEventListener('click', () => this.analyzeSingle());
+                this.singleTextInput.addEventListener('input', () => this.updateCharCount());
+                this.singleTextInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        this.analyzeSingle();
+                    }
+                });
+
+                // Initialize counters
+                this.updateCharCount();
+            }
+
+            resetSingle() {
+                this.singleTextInput.value = '';
+                this.charCount.textContent = '0';
+                this.singleResult.style.display = 'none';
+                this.showToast('Reset completed!', 'success');
+            }
+
+            updateCharCount() {
+                const text = this.singleTextInput.value;
+                const count = text.length;
+                this.charCount.textContent = count;
+                
+                // Visual feedback for character limit
+                if (count > 250) {
+                    this.charCount.style.color = '#f59e0b';
+                } else {
+                    this.charCount.style.color = '#657786';
+                }
+            }
+
+            showLoading() {
+                this.loadingOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            hideLoading() {
+                this.loadingOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            showToast(message, type = 'info', duration = 3000) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div class="toast-content">
+                        <i class="fas ${this.getToastIcon(type)}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+
+                this.toastContainer.appendChild(toast);
+
+                // Auto remove toast
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, duration);
+            }
+
+            getToastIcon(type) {
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-exclamation-circle',
+                    warning: 'fa-exclamation-triangle',
+                    info: 'fa-info-circle'
+                };
+                return icons[type] || icons.info;
+            }
+
+            async analyzeSingle() {
+                const text = this.singleTextInput.value.trim();
+                
+                if (!text) {
+                    this.showToast('Please enter some text to analyze', 'warning');
+                    return;
+                }
+
+                if (text.length > 280) {
+                    this.showToast('Text is too long. Maximum 280 characters allowed.', 'warning');
+                    return;
+                }
+
+                this.showLoading();
+                this.analyzeSingleBtn.disabled = true;
+
+                try {
+                    const response = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ text: text })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    this.displaySingleResult(result);
+                    this.showToast('Analysis completed successfully!', 'success');
+
+                } catch (error) {
+                    console.error('Analysis error:', error);
+                    this.showToast(`Analysis failed: ${error.message}`, 'error');
+                } finally {
+                    this.hideLoading();
+                    this.analyzeSingleBtn.disabled = false;
+                }
+            }
+
+            displaySingleResult(result) {
+                // Update emoji and label
+                document.getElementById('sentimentEmoji').textContent = result.emoji;
+                document.getElementById('sentimentLabel').textContent = result.sentiment;
+                
+                // Update confidence bar
+                const confidencePercent = Math.round(result.confidence * 100);
+                document.getElementById('confidenceBar').style.width = `${confidencePercent}%`;
+                document.getElementById('confidenceText').textContent = `${confidencePercent}% confidence`;
+                
+                // Show result section
+                this.singleResult.style.display = 'block';
+                
+                // Scroll to result
+                this.singleResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            window.sentimentAnalyzer = new SentimentAnalyzer();
+            console.log('🚀 Sentiment Analyzer initialized');
+        });
+    </script>
+</body>
+</html>

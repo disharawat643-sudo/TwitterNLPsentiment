@@ -1,20 +1,22 @@
 # Twitter Sentiment Analysis 🐦📊
 
-A comprehensive machine learning project for analyzing sentiment in Twitter data using Natural Language Processing techniques and Logistic Regression.
+A comprehensive machine learning project for analyzing sentiment in Twitter data using Natural Language Processing techniques and Logistic Regression, complete with an interactive web interface.
 
 ## 🎯 Project Overview
 
-This project implements a robust sentiment analysis system that can classify tweets as positive or negative. Using the Sentiment140 dataset containing 1.6 million tweets, we've built a machine learning pipeline that preprocesses text data, extracts features using TF-IDF vectorization, and trains a logistic regression model for sentiment classification.
+This project implements a robust sentiment analysis system that can classify tweets as positive or negative. Using the Sentiment140 dataset containing 1.6 million tweets, we've built a complete machine learning pipeline with preprocessing, training, and deployment capabilities including a modern web interface for real-time sentiment analysis.
 
 ### Key Features
 
+- ✅ **Interactive Web Interface**: Modern web app with real-time sentiment analysis
+- ✅ **Enhanced Training Pipeline**: Improved model training with proper preprocessing
 - ✅ **Large-scale Dataset**: Utilizes Sentiment140 dataset with 1.6M tweets
 - ✅ **Advanced Text Preprocessing**: Implements stemming, stopword removal, and text normalization
 - ✅ **TF-IDF Vectorization**: Efficient feature extraction for text data
 - ✅ **Machine Learning Model**: Logistic Regression with optimized parameters
-- ✅ **Model Persistence**: Save and load trained models for future predictions
-- ✅ **Visualization**: Interactive charts showing sentiment distribution
-- ✅ **Evaluation Metrics**: Comprehensive model performance analysis
+- ✅ **Model Persistence**: Proper saving/loading of models and vectorizers
+- ✅ **FastAPI Backend**: Modern API framework for web services
+- ✅ **Comprehensive Testing**: Thorough model validation and accuracy testing
 
 ## 👥 Team Credits
 
@@ -29,27 +31,34 @@ This project was developed by **Team 3 Dude's**:
 
 ```
 Twitter-Sentiment-Analysis/
+├── web/                           # Web application
+│   ├── app.py                     # FastAPI backend server
+│   ├── templates/                 # HTML templates
+│   │   ├── index.html             # Main web interface
+│   │   └── index_standalone.html  # Standalone version
+│   └── static/                    # Static assets
+│       ├── css/style.css          # Styling
+│       └── js/app.js              # Frontend JavaScript
 ├── src/
-│   ├── sentiment_analyzer.py      # Main sentiment analysis module
-│   ├── data_preprocessor.py       # Text preprocessing utilities
-│   ├── model_trainer.py           # Model training and evaluation
-│   └── visualizer.py              # Data visualization tools
-├── data/
-│   ├── raw/                       # Raw dataset storage
-│   └── processed/                 # Preprocessed data
+│   └── sentiment_analyzer.py     # Core sentiment analysis module
 ├── models/
-│   └── trained_model.sav          # Saved trained models
+│   ├── twitter_sentiment_model.pkl      # Trained logistic regression model
+│   └── twitter_sentiment_vectorizer.pkl # TF-IDF vectorizer
 ├── notebooks/
-│   └── twitter_sentiment_analysis.ipynb  # Original Jupyter notebook
+│   └── twitter_sentiment_analysis.py    # Original training script
 ├── scripts/
-│   ├── download_data.py           # Dataset download script
-│   └── train_model.py             # Training pipeline script
-├── tests/
-│   └── test_sentiment_analyzer.py # Unit tests
-├── docs/
-│   └── methodology.md             # Detailed methodology documentation
-├── requirements.txt               # Python dependencies
-├── setup.py                       # Package setup configuration
+│   ├── download_data.py           # Dataset download utility
+│   └── train_model.py             # Model training pipeline
+├── data/
+│   └── test_sample.csv            # Sample test data
+├── tests/                         # Test directory
+├── docs/                          # Documentation
+├── enhanced_twitter_sentiment_analysis.py  # Enhanced training script
+├── launch_web.py                  # Quick web app launcher
+├── requirements.txt               # Core dependencies
+├── requirements-web.txt           # Web app dependencies
+├── setup.py                       # Package setup
+├── LICENSE                        # MIT License
 └── README.md                      # Project documentation
 ```
 
@@ -59,9 +68,9 @@ Twitter-Sentiment-Analysis/
 
 - Python 3.7+
 - pip package manager
-- Kaggle account (for dataset access)
+- Kaggle account (for dataset access, optional for web app)
 
-### Installation
+### Option 1: Web Application (Recommended)
 
 1. **Clone the repository:**
    ```bash
@@ -69,21 +78,37 @@ Twitter-Sentiment-Analysis/
    cd Twitter-Sentiment-Analysis
    ```
 
-2. **Install dependencies:**
+2. **Install web dependencies:**
+   ```bash
+   pip install -r requirements-web.txt
+   ```
+
+3. **Launch the web application:**
+   ```bash
+   python launch_web.py
+   ```
+   
+4. **Open your browser:**
+   - Navigate to `http://localhost:8000`
+   - Start analyzing sentiment in real-time!
+
+### Option 2: Command Line Training
+
+1. **Install full dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up Kaggle API:**
+2. **Set up Kaggle API (for new training):**
    - Download your `kaggle.json` from Kaggle account settings
    - Place it in the project root directory
    ```bash
    python scripts/download_data.py
    ```
 
-4. **Run the analysis:**
+3. **Train a new model:**
    ```bash
-   python scripts/train_model.py
+   python enhanced_twitter_sentiment_analysis.py
    ```
 
 ### Quick Usage

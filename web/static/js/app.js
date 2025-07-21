@@ -36,6 +36,9 @@ class SentimentAnalyzer {
         this.batchResult = document.getElementById('batchResult');
         this.lineCount = document.getElementById('lineCount');
 
+        // Reset elements
+        this.resetSingleBtn = document.getElementById('resetSingleBtn');
+
         // UI elements
         this.loadingOverlay = document.getElementById('loadingOverlay');
         this.toastContainer = document.getElementById('toastContainer');
@@ -46,6 +49,9 @@ class SentimentAnalyzer {
     }
 
     attachEventListeners() {
+        // Reset button functionality
+        this.resetSingleBtn.addEventListener('click', () => this.resetSingle());
+
         // Single text analysis
         this.analyzeSingleBtn.addEventListener('click', () => this.analyzeSingle());
         this.singleTextInput.addEventListener('input', () => this.updateCharCount());
@@ -62,6 +68,12 @@ class SentimentAnalyzer {
         // Initialize counters
         this.updateCharCount();
         this.updateLineCount();
+    }
+
+    resetSingle() {
+        this.singleTextInput.value = '';
+        this.charCount.textContent = '0';
+        this.singleResult.style.display = 'none';
     }
 
     updateCharCount() {
