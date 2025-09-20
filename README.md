@@ -20,7 +20,7 @@ This project implements a robust sentiment analysis system that can classify twe
 
 ## 👥 Team Credits
 
-This project was developed by **Team 3 Dude's**:
+This project was developed by **Team CYAN**:
 
 - **[Sarthak Singh](https://github.com/sarthaksingh02-sudo)** - Project Lead & ML Engineer
 - **Himanshu Majumdar** - Data Scientist & NLP Specialist  
@@ -321,6 +321,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by Team 3 Dude's**
+**Made with ❤️ by Team Cyan**
 
 ⭐ **If you found this project helpful, please give it a star!** ⭐
