@@ -25,7 +25,7 @@ This project was developed by **Team 3 Dude's**:
 - **[Sarthak Singh](https://github.com/sarthaksingh02-sudo)** - Project Lead & ML Engineer
 - **Himanshu Majumdar** - Data Scientist & NLP Specialist  
 - **Samit Singh Bag** - ML Engineer & Data Analyst
-- **Sahil Raghav** - Software Developer & Visualization Expert
+- **Disha Rawat** - Software Developer & Visualization Expert
 
 ## 📁 Project Structure
 
@@ -305,9 +305,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Project Maintainer**: [Sarthak Singh](https://github.com/sarthaksingh02-sudo)
-- **Team Email**: [Contact Team 3 Dude's]
-- **Issues**: [GitHub Issues](https://github.com/sarthaksingh02-sudo/Twitter-Sentiment-Analysis/issues)
+- **Project Maintainer**: DISHA RAWAT
+- **Team Email**: [disharawat643@gmail.com]
 
 ## 🔮 Future Improvements
 
